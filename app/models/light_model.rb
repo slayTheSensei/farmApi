@@ -1,0 +1,2 @@
+class LightModel < ApplicationRecord
+end
