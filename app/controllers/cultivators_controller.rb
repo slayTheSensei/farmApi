@@ -1,5 +1,7 @@
-class CultivatorsController < ApplicationController
-  before_action :set_cultivator, only: [:show, :update, :destroy]
+# frozen_string_literal: true
+
+class CultivatorsController < OpenReadController
+  before_action :set_cultivator, only: %i[show update destroy]
 
   # GET /cultivators
   def index
@@ -15,10 +17,10 @@ class CultivatorsController < ApplicationController
 
   # POST /cultivators
   def create
-    @cultivator = Cultivator.new(cultivator_params)
+    @cultivator = current_user.cultivators.build(cultivator_params)
 
     if @cultivator.save
-      render json: @cultivator, status: :created, location: @cultivator
+      render json: @cultivator, status: :created
     else
       render json: @cultivator.errors, status: :unprocessable_entity
     end
@@ -38,14 +40,14 @@ class CultivatorsController < ApplicationController
     @cultivator.destroy
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_cultivator
-      @cultivator = Cultivator.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_cultivator
+    @cultivator = current_user.cultivators.find(params[:id])
+  end
 
-    # Only allow a trusted parameter "white list" through.
-    def cultivator_params
-      params.require(:cultivator).permit(:user_id, :company, :username, :profile_img, :phone_number)
-    end
+  # Only allow a trusted parameter "white list" through.
+  def cultivator_params
+    params.require(:cultivator).permit(:company, :username, :profile_img, :phone_number)
+  end
+  private :set_cultivator, :cultivator_params
 end

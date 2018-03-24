@@ -1,4 +1,4 @@
 class SensorSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id, :humidities, :temperatures
   has_one :room
 end

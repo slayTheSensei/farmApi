@@ -15,6 +15,7 @@ class SensorsController < ApplicationController
 
   # POST /sensors
   def create
+    # When a sensor is created I want to create all of the attached resources.
     @sensor = Sensor.new(sensor_params)
 
     if @sensor.save
